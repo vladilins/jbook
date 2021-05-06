@@ -37,11 +37,11 @@ const App = () => {
     });
 
     setCode(result.outputFiles[0].text);
-    
+
     try {
       eval(result.outputFiles[0].text);
     } catch (error) {
-      alert(error)
+      alert(error);
     }
   };
 
@@ -55,8 +55,13 @@ const App = () => {
         <button onClick={onClick}>Submit</button>
       </div>
       <pre>{code}</pre>
+      <iframe srcDoc={html} sandbox=""></iframe>
     </div>
   );
 };
+
+const html = `
+<h1>Local doc</h1>
+`;
 
 ReactDOM.render(<App />, document.querySelector("#root"));

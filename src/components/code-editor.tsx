@@ -1,6 +1,7 @@
 import MonacoEditor, { EditorDidMount } from "@monaco-editor/react";
 import prettier from "prettier";
-import parser from 'prettier/parser-babel'
+import parser from "prettier/parser-babel";
+import { useRef } from "react";
 
 interface CodeEditorProps {
   initialValue: string;
@@ -8,38 +9,50 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
+  const editorRef = useRef<any>();
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
+    editorRef.current = monacoEditor;
     monacoEditor.onDidChangeModelContent(() => {
       onChange(getValue());
     });
 
     monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
   };
-  
-  const onFormatClick = () =>{
-    
-  }
+
+  const onFormatClick = () => {
+    const unformatted = editorRef.current.getModel().getValue();
+
+    const formattted = prettier.format(unformatted, {
+      parser: "babel",
+      plugins: [parser],
+      useTabs: false,
+      semi: true,
+      singleQuote: true,
+    });
+
+    editorRef.current.setValue(formattted);
+  };
   return (
-  <div>
-  <button onClick={onFormatClick}>Format</button>
-    <MonacoEditor
-      editorDidMount={onEditorDidMount}
-      value={initialValue}
-      options={{
-        wordWrap: "on",
-        minimap: { enabled: false },
-        showUnused: false,
-        folding: false,
-        lineNumbersMinChars: 3,
-        fontSize: 16,
-        scrollBeyondLastLine: false,
-        automaticLayout: true,
-      }}
-      theme="dark"
-      language="javascript"
-      height="500px"
-    ></MonacoEditor>
-</div>
+    <div>
+      <button onClick={onFormatClick}>Format</button>
+      <MonacoEditor
+        editorDidMount={onEditorDidMount}
+        value={initialValue}
+        options={{
+          wordWrap: "on",
+          minimap: { enabled: false },
+          showUnused: false,
+          folding: false,
+          lineNumbersMinChars: 3,
+          fontSize: 16,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+        }}
+        theme="dark"
+        language="javascript"
+        height="500px"
+      ></MonacoEditor>
+    </div>
   );
 };
 

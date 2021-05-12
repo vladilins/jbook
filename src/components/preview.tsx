@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useRef, useEffect } from 'react';
 
 interface PreviewProps {
   code: string;
@@ -14,8 +14,8 @@ const html = `
             try {
               eval(event.data);
             } catch (err) {
-              const root = document.querySelector('#root')
-              root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>'
+              const root = document.querySelector('#root');
+              root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>';
               console.error(err);
             }
           }, false);
@@ -29,17 +29,17 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
 
   useEffect(() => {
     iframe.current.srcdoc = html;
-    iframe.current.contentWindow.postMessage(code, "*");
-
+    iframe.current.contentWindow.postMessage(code, '*');
   }, [code]);
 
   return (
     <iframe
+      style={{ backgroundColor: 'white' }}
       title="preview"
       ref={iframe}
-      srcDoc={html}
       sandbox="allow-scripts"
-    ></iframe>
+      srcDoc={html}
+    />
   );
 };
 

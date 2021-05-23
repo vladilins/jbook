@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Cell } from "../state";
 import CodeCell from "./code-cell";
 import TextEditor from "./text-editor";
@@ -8,6 +9,8 @@ interface CellListItemProps {
 }
 
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
+  const dispatch = useDispatch()
+  
   let child: JSX.Element;
   if (cell.type === "code") {
     child = <CodeCell />;

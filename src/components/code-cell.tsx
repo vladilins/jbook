@@ -15,12 +15,19 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
   useEffect(() => {
+    if (!bundle) {
+      createBundle(cell.id, cell.content);
+      return;
+    }
+
     const timer = setTimeout(async () => {
       createBundle(cell.id, cell.content);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.id, cell.content, createBundle]);
 
   return (
@@ -38,7 +45,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={(value) => updateCell(cell.id, value)}
           />
         </Resizable>
-        {bundle && <Preview code={bundle?.code} err={bundle?.err} />}
+        {!bundle || bundle.loading ? (
+          <div>Loading...</div>
+        ) : (
+          <Preview code={bundle?.code} err={bundle?.err} />
+        )}
       </div>
     </Resizable>
   );

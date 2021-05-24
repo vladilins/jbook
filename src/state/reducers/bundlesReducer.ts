@@ -26,7 +26,7 @@ const reducer = produce(
         state[action.payload.cellId] = {
           loading: false,
           code: action.payload.bundle.code,
-          err: action.payload.bundle.error,
+          err: action.payload.bundle.err,
         };
         return state;
       default:

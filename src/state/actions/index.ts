@@ -45,7 +45,7 @@ export interface BundleCompleteActin {
     cellId: string;
     bundle: {
       code: string;
-      error: string;
+      err: string;
     };
   };
 }

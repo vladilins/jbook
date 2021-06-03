@@ -10,25 +10,24 @@ interface Cell {
 
 export const createCellsRouter = (filename: string, dir: string) => {
   const router = express.Router();
+  router.use(express.json());
 
   const fullPath = path.join(dir, filename);
 
   router.get("/cells", async (req, res) => {
     try {
       // read the file
-      const result = await fs.readFile(fullPath, { encoding: "utf8" });
+      const result = await fs.readFile(fullPath, { encoding: "utf-8" });
 
-      res.send(JSON.parse(result))
+      res.send(JSON.parse(result));
     } catch (error) {
-      if(error.code === 'ENOENT') {
-        
+      if (error.code === "ENOENT") {
+        await fs.writeFile(fullPath, "[]", "utf-8");
+        res.send([]);
       } else {
-        throw error
+        throw error;
       }
     }
-    
-
-
   });
 
   router.post("/cells", async (req, res) => {

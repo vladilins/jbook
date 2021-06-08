@@ -18,7 +18,7 @@ var serve = function (port, filename, dir, useProxy) {
         }));
     }
     else {
-        var packagePath = require.resolve("local-client/build.html");
+        var packagePath = require.resolve("@jsnote-v/local-client/build.html");
         app.use(express_1.default.static(packagePath));
     }
     return new Promise(function (resolve, reject) {

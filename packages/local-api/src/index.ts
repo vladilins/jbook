@@ -22,7 +22,7 @@ export const serve = (
       })
     );
   } else {
-    const packagePath = require.resolve("local-client/build.html");
+    const packagePath = require.resolve("@jsnote-v/local-client/build.html");
     app.use(express.static(packagePath));
   }
 
